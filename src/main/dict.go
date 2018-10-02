@@ -4,6 +4,10 @@ type Dict struct {
 	data map[string]*Object
 }
 
+func (dict *Dict) init() {
+	dict.data = map[string]*Object{}
+}
+
 func (dict *Dict) Get(key string) *Object {
 	o, ok := dict.data[key]
 	if ok {

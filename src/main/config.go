@@ -6,11 +6,13 @@ import (
 )
 
 type Config struct {
-	Port string `json:"Port"`
+	Port  string `json:"Port"`  //监听端口，默认9999
+	DbNum int    `json:"DbNum"` //数据库个数，默认16个，序号0-15
 }
 
 var config *Config = &Config{
-	Port: "9999",
+	Port:  "6379",
+	DbNum: 16,
 }
 
 func (config *Config) Load(file string) {

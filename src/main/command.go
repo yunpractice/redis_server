@@ -6,7 +6,8 @@ func cmd_get(db *DB, args []string) string {
 	if o == nil {
 
 	}
-	if o.t {
+	if o.t == 1 {
 
 	}
+	return ""
 }

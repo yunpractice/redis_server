@@ -5,13 +5,13 @@ type Dict struct {
 }
 
 func (dict *Dict) Get(key string) *Object {
-	o, ok := dict->data[key]
+	o, ok := dict.data[key]
 	if ok {
 		return o
 	}
 	return nil
 }
 
-func (dict *Dict) Set(key string,o *Object){
-	dict->data[key] = o
+func (dict *Dict) Set(key string, o *Object) {
+	dict.data[key] = o
 }

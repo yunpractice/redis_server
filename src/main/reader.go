@@ -31,6 +31,7 @@ func (r *Reader) run() {
 		db := dbmgr.getDB(0)
 		result := dispatch_cmd(db, request.cmd, request.args)
 		r.conn.Write([]byte(result))
+		fmt.Println(result)
 	}
 	r.conn.Close()
 }

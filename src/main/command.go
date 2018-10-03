@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"strings"
 )
 
 type CMD func(db *DB, args []string) string
@@ -10,13 +10,15 @@ var cmds map[string]CMD = map[string]CMD{}
 
 func register_cmds() {
 	register_string_cmds()
+	register_list_cmds()
+	register_set_cmds()
 }
 
 func dispatch_cmd(db *DB, cmd string, args []string) string {
+	cmd = strings.ToLower(cmd)
 	f, ok := cmds[cmd]
 	if !ok {
-		fmt.Println("cmd: ", cmd, " not exist")
-		return "-command not exist!\r\n"
+		return get_error_string("ERR unknown command: " + cmd)
 	}
 	return f(db, args)
 }

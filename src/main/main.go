@@ -14,6 +14,9 @@ func main() {
 		config.Load(file)
 	}
 
+	g_aof.init(config.AsyncMode, config.AsyncFile)
+	go g_aof.run()
+
 	fmt.Println("start init dbs")
 	dbmgr.init(config.DbNum)
 

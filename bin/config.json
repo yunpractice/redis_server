@@ -1,4 +1,6 @@
 {
 	"Port":"6379",
-	"DbNum":16
+	"DbNum":16,
+	"ASYNCMODE":"AOF_FSYNC_ALWAYS",
+	"ASYNCFILE":".\\aof.log"
 }

@@ -4,31 +4,31 @@ import (
 	"container/list"
 )
 
-func cmd_lpop(db *DB, args []string) string {
+func cmd_lpop(db *DB, args []string) (string, bool) {
 	if len(args) != 1 {
-		return get_error_string("ERR wrong number of arguments for 'lpop' command")
+		return get_error_string("ERR wrong number of arguments for 'lpop' command"), false
 	}
 	key := args[0]
 	o := db.dict.Get(key)
 	if o == nil {
-		return get_empty_bulk_string()
+		return get_empty_bulk_string(), false
 	} else if o.t != 2 {
-		return get_error_string("WRONGTYPE Operation against a key holding the wrong kind of value")
+		return get_error_string("WRONGTYPE Operation against a key holding the wrong kind of value"), false
 	}
 	l := o.p.(*list.List)
 	if l.Len() == 0 {
-		return get_empty_bulk_string()
+		return get_empty_bulk_string(), false
 	}
 
 	node := l.Front()
 	l.Remove(node)
 
-	return get_bulk_string(node.Value.(string))
+	return get_bulk_string(node.Value.(string)), true
 }
 
-func cmd_lpush(db *DB, args []string) string {
+func cmd_lpush(db *DB, args []string) (string, bool) {
 	if len(args) < 2 {
-		return get_error_string("ERR wrong number of arguments for 'lpush' command")
+		return get_error_string("ERR wrong number of arguments for 'lpush' command"), false
 	}
 	key := args[0]
 	o := db.dict.Get(key)
@@ -40,7 +40,7 @@ func cmd_lpush(db *DB, args []string) string {
 			p: l,
 		})
 	} else if o.t != 2 {
-		return get_error_string("WRONGTYPE Operation against a key holding the wrong kind of value")
+		return get_error_string("WRONGTYPE Operation against a key holding the wrong kind of value"), false
 	} else {
 		l = o.p.(*list.List)
 	}
@@ -49,34 +49,34 @@ func cmd_lpush(db *DB, args []string) string {
 		l.PushFront(args[i])
 	}
 
-	return get_number_string(l.Len())
+	return get_number_string(l.Len()), true
 }
 
-func cmd_rpop(db *DB, args []string) string {
+func cmd_rpop(db *DB, args []string) (string, bool) {
 	if len(args) != 1 {
-		return get_error_string("ERR wrong number of arguments for 'rpop' command")
+		return get_error_string("ERR wrong number of arguments for 'rpop' command"), false
 	}
 	key := args[0]
 	o := db.dict.Get(key)
 	if o == nil {
-		return get_empty_bulk_string()
+		return get_empty_bulk_string(), false
 	} else if o.t != 2 {
-		return get_error_string("WRONGTYPE Operation against a key holding the wrong kind of value")
+		return get_error_string("WRONGTYPE Operation against a key holding the wrong kind of value"), false
 	}
 	l := o.p.(*list.List)
 	if l.Len() == 0 {
-		return get_empty_bulk_string()
+		return get_empty_bulk_string(), false
 	}
 
 	node := l.Back()
 	l.Remove(node)
 
-	return get_bulk_string(node.Value.(string))
+	return get_bulk_string(node.Value.(string)), true
 }
 
-func cmd_rpush(db *DB, args []string) string {
+func cmd_rpush(db *DB, args []string) (string, bool) {
 	if len(args) < 2 {
-		return get_error_string("ERR wrong number of arguments for 'rpush' command")
+		return get_error_string("ERR wrong number of arguments for 'rpush' command"), false
 	}
 	key := args[0]
 	o := db.dict.Get(key)
@@ -88,7 +88,7 @@ func cmd_rpush(db *DB, args []string) string {
 			p: l,
 		})
 	} else if o.t != 2 {
-		return get_error_string("WRONGTYPE Operation against a key holding the wrong kind of value")
+		return get_error_string("WRONGTYPE Operation against a key holding the wrong kind of value"), false
 	} else {
 		l = o.p.(*list.List)
 	}
@@ -97,7 +97,7 @@ func cmd_rpush(db *DB, args []string) string {
 		l.PushBack(args[i])
 	}
 
-	return get_number_string(l.Len())
+	return get_number_string(l.Len()), true
 }
 
 func register_list_cmds() {

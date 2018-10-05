@@ -29,7 +29,10 @@ func (r *Reader) run() {
 		}
 
 		db := dbmgr.getDB(0)
-		result := dispatch_cmd(db, request.cmd, request.args)
+		result, needaof := dispatch_cmd(db, request.cmd, request.args)
+		if needaof {
+			g_aof.write(request)
+		}
 		r.conn.Write([]byte(result))
 		fmt.Println(result)
 	}

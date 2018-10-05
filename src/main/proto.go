@@ -39,3 +39,12 @@ func get_bulks_string(content []string) string {
 	}
 	return result
 }
+
+func get_request_string(cmd string, args []string) string {
+	result := fmt.Sprintf("*%d\r\n", len(args)+1)
+	result = result + get_bulk_string(cmd)
+	for i := 0; i < len(args); i++ {
+		result = result + get_bulk_string(args[i])
+	}
+	return result
+}

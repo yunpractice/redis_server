@@ -25,10 +25,17 @@ func main() {
 	fmt.Println("start listen port: ", config.Port)
 	l := &Listener{}
 	l.init(config.Port)
-	go l.run()
+
+    go l.run()
+
+    go dbmgr.run()
 
 	sigs := make(chan os.Signal, 1)
 	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
 
 	<-sigs
+
+    l.shutdown()
+
+    dbmgr.shutdown()
 }

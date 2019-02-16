@@ -35,8 +35,14 @@ func (listener *Listener) run() {
 func (listener *Listener) handleConn(conn net.Conn) {
 	fmt.Println("new Connection", conn.RemoteAddr())
 	client := &Client{}
-	client.init(conn)
-	client.run()
 	listener.id++
 	listener.clients[listener.id] = client
+
+    client.init(conn)
+	client.run()
+}
+
+func (listener *Listener) shutdown(){
+    // 不再接收新连接
+    listener.l.Close()
 }
